@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\BannedIp;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -21,6 +22,11 @@ Route::get('user-management', UserManagement::class)
     ->middleware(['auth', 'verified'])
     ->name('user-management');
 
+Route::get('banned-ip', BannedIp::class)
+    ->middleware(['auth', 'verified'])
+    ->name('banned-ip');
+
+
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
@@ -29,4 +35,4 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

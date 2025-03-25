@@ -15,15 +15,15 @@ class UserManagement extends Component
     public $email = '';
     public $password = 'STUD-';
     public $ipAddress;
+    public $status = 'Offline';
 
 
-    public $users = [];
+    public $users;
 
     public function mount()
     {
-        // $this->user = User::se
         $this->users = User::all();
-        $this->ipAddress = request()->ip();
+        // $this->ipAddress = request()->ip();
     }
     public function render()
     {
@@ -36,9 +36,11 @@ class UserManagement extends Component
         // dd($this->all());
         $validate = $this->validate([
             'schoolID' => ['required', 'string', 'max:255'],
+            'ipAddress' => ['required', 'string', 'max:255'],
             'type' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'status' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string',]
         ]);
 

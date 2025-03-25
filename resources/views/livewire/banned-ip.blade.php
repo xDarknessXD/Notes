@@ -58,24 +58,18 @@
 
 
                     <flux:modal name="edit-profile" variant="flyout">
-                        <form wire:submit="addUser()">
+                        <form wire:submit="banned()">
                             @csrf
                             <div class="space-y-6">
                                 <div>
-                                    <flux:heading size="lg">Add User</flux:heading>
-                                    <flux:text class="mt-2">Add another User.</flux:text>
+                                    <flux:heading size="lg">Ban Website</flux:heading>
+                                    <flux:text class="mt-2">Add another banable website</flux:text>
                                 </div>
                                 {{-- <flux:input wire:model.live="schoolID" type="number" label="School ID"
                                     placeholder="School ID" /> --}}
-                                <flux:input.group label="School ID" wire:model="schoolID">
-                                    {{-- <flux:input.group.prefix>STUD-</flux:input.group.prefix> --}}
-
-                                    <flux:input wire:model.live='password' required placeholder="0000-0000" />
-                                </flux:input.group>
-                                <flux:input wire:model="name" required label="Name" placeholder="Name" />
-                                <flux:input wire:model="email" required label="Email" placeholder="Email" />
-                                <flux:input wire:model="password" type="password" label="Password" />
-                                {{-- <flux:input wire:model="ipAddress" label="Ip Address" /> --}}
+                                <flux:input wire:model="link" required label="Link" placeholder="Link" />
+                                <flux:input wire:model="ip" required label="IP Address" placeholdeLink="IP Address" />
+                                <flux:input wire:model="type" required label="Type" placeholder="Type" />
 
                                 <div class="flex">
                                     <flux:spacer />
@@ -96,17 +90,6 @@
                             <th class="px-6 py-3 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div x-data="{ checked: false }" class="flex items-center gap-3">
-                                        <div @click="checked = !checked"
-                                            class="flex h-5 w-5 cursor-pointer items-center justify-center rounded-md border-[1.25px]"
-                                            :class="checked ? 'border-brand-500 dark:border-brand-500 bg-brand-500' :
-                                                'bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700'">
-                                            <svg :class="checked ? 'block' : 'hidden'" width="14" height="14"
-                                                viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M11.6668 3.5L5.25016 9.91667L2.3335 7" stroke="white"
-                                                    stroke-width="1.94437" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                            </svg>
-                                        </div>
                                         <div>
                                             <span
                                                 class="block font-medium text-gray-500 text-theme-xs dark:text-gray-400">
@@ -119,14 +102,7 @@
                             <th class="px-6 py-3 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                        User
-                                    </p>
-                                </div>
-                            </th>
-                            <th class="px-6 py-3 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                        Email
+                                        Links
                                     </p>
                                 </div>
                             </th>
@@ -140,14 +116,7 @@
                             <th class="px-6 py-3 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                        Last Login
-                                    </p>
-                                </div>
-                            </th>
-                            <th class="px-6 py-3 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                        Status
+                                        Type
                                     </p>
                                 </div>
                             </th>
@@ -163,7 +132,7 @@
                     <!-- table header end -->
 
                     <!-- table body start -->
-                    @foreach ($users as $user)
+                    {{-- @foreach ($users as $user) --}}
                         <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
                             <tr>
                                 <td class="px-6 py-3 whitespace-nowrap">
@@ -184,7 +153,7 @@
                                             <div>
                                                 <span
                                                     class="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-                                                    {{ $user->schoolID }}
+                                                    STUD-2022-0323
                                                 </span>
                                             </div>
                                         </div>
@@ -196,7 +165,8 @@
                                             <div>
                                                 <span
                                                     class="text-theme-sm mb-0.5 block font-medium text-gray-700 dark:text-gray-400">
-                                                    {{ $user->name }}
+                                                    {{-- {{ $user->name }} --}}
+                                                    https://pornhub.com
                                                 </span>
                                             </div>
                                         </div>
@@ -205,43 +175,16 @@
                                 <td class="px-6 py-3 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <p class="text-gray-700 text-theme-sm dark:text-gray-400">
-                                            {{ $user->email }}
+                                            {{-- {{ $user->email }} --}}
+                                            157.240.0.0/1
                                         </p>
                                     </div>
                                 </td>
                                 <td class="px-6 py-3 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <p class="text-gray-700 text-theme-sm dark:text-gray-400">
-                                            {{ $user->ipaddress ?? 'Not Available' }}
-                                        </p>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-3 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <p class="text-gray-700 text-theme-sm dark:text-gray-400">
-                                            @if ($user->last_login_ip)
-                                                {{ \Carbon\Carbon::parse($user->last_login_ip)->diffForHumans() }}
-                                            @else
-                                                Active
-                                            @endif
-                                            {{-- {{ $user->created_at->diffForHumans() }} --}}
-                                        </p>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-3 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <p
-                                            class="bg-success-50 text-theme-xs text-success-600 dark:bg-success-500/15 dark:text-success-500 rounded-full px-2 py-0.5 font-medium">
-                                            @if ($user->status == 'Online')
-                                                <span
-                                                    class="inline-block w-2 h-2 bg-green-500 rounded-full mr-1 mb-.75"></span>
-                                                {{ $user->status }}
-                                            @else
-                                                <span
-                                                    class="inline-block w-2 h-2 bg-red-500 rounded-full mr-1 mb-.75"></span>
-                                                {{ $user->status }}
-                                                {{-- {{ \Carbon\Carbon::parse($user->last_login_ip)->diffForHumans() }} --}}
-                                            @endif
+                                            {{-- {{ $user->ipaddress ?? 'Not Available' }} --}}
+                                            18+
                                         </p>
                                     </div>
                                 </td>
@@ -258,7 +201,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                    @endforeach
+                    {{-- @endforeach --}}
                     <!-- table body end -->
                 </table>
             </div>

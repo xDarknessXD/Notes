@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -39,6 +40,11 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
+
+        $user = User::where('email', $this->email)->first();
+        $user->ipAddress = request()->ip();
+        $user->status = 'Online';
+        $user->save();
 
         $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
     }
@@ -124,3 +130,4 @@ new #[Layout('components.layouts.auth')] class extends Component {
         </div>
     @endif
 </div>
+

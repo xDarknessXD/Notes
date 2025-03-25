@@ -13,6 +13,13 @@ new #[Layout('components.layouts.auth')] class extends Component {
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
+    public string $ipAddress = '';
+
+    public function mount()
+    {
+        $this->ipAddress = request()->ip();
+    }
+
 
     /**
      * Handle an incoming registration request.
@@ -23,6 +30,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+            'ipAddress' => ['required', 'string', 'max:255'],
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
