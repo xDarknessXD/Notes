@@ -14,7 +14,7 @@ class UserManagement extends Component
     public $name = '';
     public $email = '';
     public $password = 'STUD-';
-    public $ipAddress;
+    public $ipAddress = '';
     public $status = 'Offline';
 
 
@@ -23,7 +23,7 @@ class UserManagement extends Component
     public function mount()
     {
         $this->users = User::all();
-        // $this->ipAddress = request()->ip();
+        $this->ipAddress = request()->ip();
     }
     public function render()
     {
@@ -36,7 +36,7 @@ class UserManagement extends Component
         // dd($this->all());
         $validate = $this->validate([
             'schoolID' => ['required', 'string', 'max:255'],
-            'ipAddress' => ['required', 'string', 'max:255'],
+            'ipAddress' => [ 'string', 'max:255'],
             'type' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
@@ -46,7 +46,14 @@ class UserManagement extends Component
 
 
         User::create($validate);
-        // $this->reset();
-        redirect()->route('user-management');
+        $this->reset();
+        // redirect()->route('user-management');
+    }
+
+    public function delete($id){
+        $customer = \App\Models\User::find($id);
+        $customer->delete();
+        // $this->customers = \App\Models\Customer::all();
     }
 }
+

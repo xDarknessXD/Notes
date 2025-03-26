@@ -1,4 +1,4 @@
-<div class="rounded-2xl border border-gray-200 bg-white dark:border-neutral-700 dark:bg-white/[0.03]">
+<div class="rounded-2xl border border-gray-200 bg-white dark:border-neutral-700 dark:bg-white/[0.03]" wire:poll.keep-alive>
     <div class="px-5 py-4 sm:px-6 sm:py-5">
         <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
             User Management
@@ -53,7 +53,7 @@
                     </div>
 
                     <flux:modal.trigger class="mt-4" name="edit-profile">
-                        <flux:button>Add User</flux:button>
+                        <flux:button>Add Website</flux:button>
                     </flux:modal.trigger>
 
 
@@ -93,7 +93,7 @@
                                         <div>
                                             <span
                                                 class="block font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                                School ID
+                                                ID
                                             </span>
                                         </div>
                                     </div>
@@ -132,7 +132,7 @@
                     <!-- table header end -->
 
                     <!-- table body start -->
-                    {{-- @foreach ($users as $user) --}}
+                    @foreach ($links as $link)
                         <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
                             <tr>
                                 <td class="px-6 py-3 whitespace-nowrap">
@@ -153,7 +153,7 @@
                                             <div>
                                                 <span
                                                     class="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-                                                    STUD-2022-0323
+                                                    {{ $link->id }}
                                                 </span>
                                             </div>
                                         </div>
@@ -165,8 +165,8 @@
                                             <div>
                                                 <span
                                                     class="text-theme-sm mb-0.5 block font-medium text-gray-700 dark:text-gray-400">
-                                                    {{-- {{ $user->name }} --}}
-                                                    https://pornhub.com
+                                                    {{ $link->link }}
+                                                    {{-- https://p*rnhUb.com --}}
                                                 </span>
                                             </div>
                                         </div>
@@ -175,8 +175,7 @@
                                 <td class="px-6 py-3 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <p class="text-gray-700 text-theme-sm dark:text-gray-400">
-                                            {{-- {{ $user->email }} --}}
-                                            157.240.0.0/1
+                                            {{ $link->ip }}
                                         </p>
                                     </div>
                                 </td>
@@ -184,7 +183,7 @@
                                     <div class="flex items-center">
                                         <p class="text-gray-700 text-theme-sm dark:text-gray-400">
                                             {{-- {{ $user->ipaddress ?? 'Not Available' }} --}}
-                                            18+
+                                            {{ $link->type }}
                                         </p>
                                     </div>
                                 </td>
@@ -201,7 +200,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                    {{-- @endforeach --}}
+                    @endforeach
                     <!-- table body end -->
                 </table>
             </div>

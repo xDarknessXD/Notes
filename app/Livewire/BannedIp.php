@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-// use App\Models\BannedIp;
 
 class BannedIp extends Component
 {
@@ -11,10 +10,13 @@ class BannedIp extends Component
     public $ip;
     public $type;
 
+    public $links;
+
     public function mount()
     {
-        // $this->links = App\Models\BannedIp::all();
+        $this->links = \App\Models\BannedIp::all();
     }
+
     public function render()
     {
         return view('livewire.banned-ip');
@@ -22,17 +24,20 @@ class BannedIp extends Component
 
     public function banned()
     {
-        // dd($this->all());
-        $validate = $this->validate([
+        $this->validate([
             'link' => ['required', 'string', 'max:255'],
             'ip' => ['required', 'string', 'max:255'],
             'type' => ['required', 'string', 'max:255'],
         ]);
 
+        \App\Models\BannedIp::create([
+            'link' => $this->link,
+            'ip' => $this->ip,
+            'type' => $this->type,
+        ]);
 
-        \App\Models\BannedIp::create($validate);
-        // $this->reset();
-        redirect()->route('banned-ip');
+        $this->reset();
+        $this->links = \App\Models\BannedIp::all();
     }
-
 }
+
